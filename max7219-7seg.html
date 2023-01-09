@@ -1,0 +1,125 @@
+<!--
+  Copyright 2022 Ocean (iiot2k@gmail.com).
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('max7219-7seg', {
+        category: 'iiot modules',
+        color: 'LightGray',
+        paletteLabel: '7seg-led',
+        defaults: {
+            name:   { value: "" },
+            spich:  { value: "0", required: true },
+            nmod:   { value: 1,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 1) && (v <= 20); } },
+            npos:   { value: 0,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 19); } },
+            intens: { value: 10,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 15); } },
+            ralign: { value: false },
+            fill:   { value: " ", required: true },
+        },
+        inputs: 1,
+        outputs: 0,
+        inputLabels: ["string/number"],
+        icon: "max7129-7seg.png",
+        labelStyle: function() { return this.name ? "node_label_italic" : ""; },
+        label: function () { return this.name || "7seg-led " + this.spich + "#" + this.npos + "/" + this.nmod; },
+    });
+</script>
+
+<script type="text/html" data-template-name="max7219-7seg">
+    <div class="form-row">
+        <label style="width:100%; border-bottom: 2px solid rgb(0, 0, 0);"><b>max7219 7-Segment 8-Digit LED Display</b></label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-spich"><b>SPI-Channel</b></label>
+        <select type="text" id="node-input-spich" style="width: auto;">
+            <option value="0">SPI0.0</option>
+            <option value="1">SPI0.1</option>
+            <option value="2">SPI1.0</option>
+            <option value="3">SPI1.1</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-nmod"><b>Module-Count</b></label>
+        <input id="node-input-nmod" input type="number" min="1" max="20" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-npos"><b>Module-Pos</b></label>
+        <input id="node-input-npos" input type="number" min="0" max="19" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-intens"><b>Intensity</b></label>
+        <input id="node-input-intens" input type="number" min="0" max="15" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-ralign"><b>Rigth-Align</b></label>
+        <input type="checkbox" id="node-input-ralign" title="Align text on rigth" style="display: inline-block; width: auto; vertical-align: top;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-fill"><b>Fill</b></label>
+        <select type="text" id="node-input-fill" style="width: auto;">
+            <option value=" ">Blank</option>
+            <option value="0">Zero</option>
+            <option value="-">Minus</option>
+            <option value="_">Underline</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><b>Name</b></label>
+        <input id="node-input-name" type="text" title="Give this node a name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="max7219-7seg">
+    <p>max7219 7-Segment 8-Digit LED Display</p>
+    <h3><b>Input:</b></h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number/string</span></dt>
+        <dd>Contains the text to display on led.</dd>
+        <dd>Input is converted to string.</dd>
+        <dd>Only charactes 0x20-0x7E are accepted.</dd>
+        <dd>An exception to this is the degree sign °.</dd>
+        <dd>Trailing point in string, turns LED point on.</dd>
+        <dd>More then valid 8 characters are cut.</dd>
+        <dt>npos (optional)<span class="property-type">number</span></dt>
+        <dd>Selects max7219 module to write.</dd>
+        <dd>Position must lower then Module-Count.<br>
+        <dd>For example first module has position 0.</dd>
+        <dd>Default position is 0.</dd>
+        <dt>clear (optional)<span class="property-type">any</span></dt>
+        <dd>Clears all LEDs on all modules.</dd>
+        <dt>intens (optional)<span class="property-type">number</span></dt>
+        <dd>Set LED intensity for all modules.</dd>
+        <dd>Intensity value is 0..15.</dd>
+        <dd>All other properties are ignored.</dd>
+        <dt>fill (optional)<span class="property-type">string</span></dt>
+        <dd>Set fill character.</dd>
+        <dd>Default fill character is blank.</dd>
+        <dt>ralign (optional)<span class="property-type">boolean</span></dt>
+        <dd>If true, sets right text align.</dd>
+        <dd>Default is left align.</dd>
+    </dl>
+    <h3><b>Usage:</b></h3>
+    <p>
+        You can cascade modules in series.<br>
+        Enter count of max7219 in <b>Module-Count</b>.<br>
+        If the modules are connected to the +5V RPi,<br>
+        consider the total power consumption.<br>
+        Use external voltage source on overload.<br>
+        This node works on Raspberry Pi<br>
+        with 32bit or 64bit OS.<br>
+        Enable SPI with raspi-config.<br>
+        For enable SPI1 read documentation.<br> 
+	</p>
+</script>

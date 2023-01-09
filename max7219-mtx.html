@@ -1,0 +1,133 @@
+<!--
+  Copyright 2022 Ocean (iiot2k@gmail.com).
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('max7219-mtx', {
+        category: 'iiot modules',
+        color: 'LightGray',
+        paletteLabel: 'matrix-led',
+        defaults: {
+            name:   { value: "" },
+            spich:  { value: "0", required: true },
+            nmod:   { value: 4,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 1) && (v <= 64); } },
+            npos:   { value: 0,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 63); } },
+            intens: { value: 10,  required: true,  validate: function(v) { return RED.validators.number(v) && (v >= 0) && (v <= 15); } },
+            nfont:  { value: "0", required: true },
+        },
+        inputs: 1,
+        outputs: 0,
+        inputLabels: ["array/String"],
+        icon: "max7129-mtx.png",
+        labelStyle: function() { return this.name ? "node_label_italic" : ""; },
+        label: function () { return this.name || "matrix-led " + this.spich + "#" + this.npos + "/" + this.nmod; },
+    });
+</script>
+
+<script type="text/html" data-template-name="max7219-mtx">
+    <div class="form-row">
+        <label style="width:100%; border-bottom: 2px solid rgb(0, 0, 0);"><b>max7219 Matrix 8x8 LED Display</b></label>
+    </div>
+    <div class="form-row">
+        <label for="node-input-spich"><b>SPI-Channel</b></label>
+        <select type="text" id="node-input-spich" style="width: auto;">
+            <option value="0">SPI0.0</option>
+            <option value="1">SPI0.1</option>
+            <option value="2">SPI1.0</option>
+            <option value="3">SPI1.1</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-nmod"><b>Module-Count</b></label>
+        <input id="node-input-nmod" input type="number" min="1" max="64" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-npos"><b>Module-Pos</b></label>
+        <input id="node-input-npos" input type="number" min="0" max="19" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-intens"><b>Intensity</b></label>
+        <input id="node-input-intens" input type="number" min="0" max="15" required style="width: auto;">
+    </div>
+    <div class="form-row">
+        <label for="node-input-nfont"><b>Font</b></label>
+        <select type="text" id="node-input-nfont" style="width: auto;">
+            <option value="0">Wide Font</option>
+            <option value="1">Small Font</option>
+            <option value="2">Small Font Compact</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><b>Name</b></label>
+        <input id="node-input-name" type="text" title="Give this node a name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="max7219-mtx">
+    <p>max7219 Matrix 8x8 LED Display</p>
+    <h3><b>Input:</b></h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">number array</span></dt>
+        <dd>Any pattern can be drawn with data array.</dd>
+        <dd>Each data corresponds to the led line.</dd>
+        <dd>The first data is the first line.</dd>
+        <dd>To draw a face, the following data is sent:</dd>
+        <dd>[0x1C,0x22,0x55,0x41,0x55,0x49,0x22,0x1C]</dd>
+        <dt>payload <span class="property-type">number/string</span></dt>
+        <dd>Contains the text to display on led.</dd>
+        <dd>Input is converted to string.</dd>
+        <dd>Only charactes 0x20-0x7E are accepted.</dd>
+        <dd>An exception to this is code</dd>
+        <dd><b>0xB0</b>: draws ° (alt+0176).</dd>
+        <dd><b>0xB1</b>: draws °C (alt+0177).</dd>
+        <dd><b>0xB2</b>: draws °F (alt+0178).</dd>
+        <dt>nfont (optional)<span class="property-type">number</span></dt>
+        <dd>Selects font.</dd>
+        <dd><b>0</b>: Wide Font.</dd>
+        <dd><b>1</b>: Small Font.</dd>
+        <dd><b>2</b>: Small Font Compact.</dd>
+        <dd>On Small Font Compact following trailing</dd>
+        <dd>characters are drawn within character:</dd>
+        <dd><b>. (Point)</b></dd>
+        <dd><b>, (Comma)</b></dd>
+        <dd><b>: (Colon)</b></dd>
+        <dd><b>| (Line)</b></dd>
+        <dd><b>' (Quote)</b></dd>
+        <dd>This allows values to be represented more compactly.</dd>
+        <dd>For example 3.753 is displayed on 4 led matrix.</dd>
+        <dt>npos (optional)<span class="property-type">number</span></dt>
+        <dd>Selects max7219 module to write.</dd>
+        <dd>Position must lower then Module-Count.<br>
+        <dd>For example first module has position 0.</dd>
+        <dt>clear (optional)<span class="property-type">any</span></dt>
+        <dd>Clears all LEDs on all modules.</dd>
+        <dt>intens (optional)<span class="property-type">number</span></dt>
+        <dd>Set LED intensity for all modules.</dd>
+        <dd>Intensity value is 0..15.</dd>
+        <dd>All other properties are ignored.</dd>
+    </dl>
+    <h3><b>Usage:</b></h3>
+    <p>
+        You can cascade modules in series.<br>
+        Enter count of max7219 in <b>Module-Count</b>.<br>
+        If the modules are connected to the +5V RPi,<br>
+        consider the total power consumption.<br>
+        Use external voltage source on overload.<br>
+        This node works on Raspberry Pi<br>
+        with 32bit or 64bit OS.<br>
+        Enable SPI with raspi-config.<br>
+        For enable SPI1 read documentation.<br> 
+	</p>
+</script>
