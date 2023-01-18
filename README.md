@@ -9,12 +9,15 @@
 A Node-Red node for max7219 8-Digit LED Display<br>
 
 Example  **max7219** 7-Segment Module
+
 ![image info](images/max7219-7seg.png)
 
 Example  **max7219** Matrix Module
+
 ![image info](images/max7219-matrix.png)
 
 Connecting  **max7219** Module to SPI0-CS0
+
 ![image info](images/connecting7219.png)
 
 ## Nodes
