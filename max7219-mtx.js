@@ -44,9 +44,11 @@ module.exports = function(RED) {
 			if (node.iserror)
 				return;
 			
+			// Clear all leds	
 			if (msg.hasOwnProperty('clear'))
 				sysmodule.clear(node.spich);
 
+			// Set led intensity
 			if (msg.hasOwnProperty('intens')) {
 				if ((typeof msg.intens == 'number') && 
 					(msg.intens >= 0) && 
@@ -58,6 +60,7 @@ module.exports = function(RED) {
 				return;
 			}
 
+			// Select postion
 			var npos = node.npos;
 
 			if (msg.hasOwnProperty('npos')) {
@@ -69,6 +72,7 @@ module.exports = function(RED) {
 				}
 			}
 
+			// Display pattern array
 			if (Array.isArray(msg.payload)) {
 				if (msg.payload.length == 0)
 					return;
@@ -93,6 +97,7 @@ module.exports = function(RED) {
 				return;
 			}
 
+			// Select font
 			var nfont = node.nfont;
 
 			if (msg.hasOwnProperty('nfont')) {
@@ -104,6 +109,40 @@ module.exports = function(RED) {
 				}
 			}
 
+			// Load custom font
+			if (msg.hasOwnProperty('customfont')) {
+				var topos = 0;
+				if (msg.hasOwnProperty('topos')) {
+					if ((typeof msg.topos == 'number') &&  (msg.topos >= 0x00) && (msg.topos <= 0x1F))
+						topos = msg.topos;
+				}
+
+				if (!Array.isArray(msg.customfont)) {
+					syslib.outError(node, "inv font", "invalid custom font array");
+					return;
+				}
+				
+				for(var i=0; i < msg.customfont.length; i++) {
+					if (typeof msg.customfont[i] !== "number") {
+						syslib.outError(node, "font number", "invalid custom font number");
+						return;
+					}
+	
+					if (msg.customfont[i] < 0)
+						msg.customfont[i] = 0;
+					else if (msg.customfont[i] > 255)
+						msg.customfont[i] = 255;
+				}
+
+				if (!sysmodule.writeCustomFont(msg.customfont, topos)) {
+					syslib.outError(node, "font error", "custom Font not load");
+					return;
+				}
+				else
+					syslib.outOk(node);
+			}
+
+			// Display string/number
 			var out_txt = String(msg.payload);
 			if (typeof  out_txt !== "string") {
 				syslib.outError(node, "not string", "msg.payload not string");

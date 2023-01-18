@@ -93,6 +93,22 @@
         <dd><b>0xB0</b>: draws ° (alt+0176).</dd>
         <dd><b>0xB1</b>: draws °C (alt+0177).</dd>
         <dd><b>0xB2</b>: draws °F (alt+0178).</dd>
+        <dd><b>0x00 - 0x1F</b>: displays custom font.</dd>
+        <dt>customfont (optional)<span class="property-type">number array</span></dt>
+        <dd>Sends custom font as array.</dd>
+        <dd>Each array element defines line pattern.</dd>
+        <dd>Eight array elements defines the font.</dd>
+        <dd>Max. 32 custom fonts are possible.</dd>
+        <dd>To display the custom font, send text with</dd>
+        <dd><b>String.fromCharCode(0,1,2);</b></dd>
+        <dd>This displays the first three custom fonts.</dd>
+        <dd>Selected font is ignored.</dd>
+        <dd>To delete custom fonts, send empty array.</dd>
+        <dt>topos (optional)<span class="property-type">number</span></dt>
+        <dd>Sets the start position where the array</dd>
+        <dd>of custom font written.</dd>
+        <dd>Valid values are 0x00 - 0x1F.</dd>
+        <dd>Default position is 0x00.</dd>
         <dt>nfont (optional)<span class="property-type">number</span></dt>
         <dd>Selects font.</dd>
         <dd><b>0</b>: Wide Font.</dd>

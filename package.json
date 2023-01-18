@@ -1,6 +1,6 @@
 {
   "name": "node-red-contrib-iiot-rpi-max7219",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "A Node-Red node for max7219 8-Digit LED Display",
 
   "dependencies": {
