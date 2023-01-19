@@ -39,7 +39,7 @@ at field ***Module-Count***.<br>
 and input text is written to module.<br>
 - When **Rigth-Align** is selected, text is shift to rigth.<br>  
 - Input Numbers are converted to string.<br> 
-- Only ACII code characters "blank" (0x20) to ~ (0x7E) are displayed.<br>
+- Only ASCII code characters "blank" (0x20) to ~ (0x7E) are displayed.<br>
 - An exception to this is the degree sign ° and<br>
 ***0x00 - 0x1F*** for displays custom font.<br>
 - Trailing point in string, turns LED point on.<br>
@@ -95,7 +95,7 @@ at field ***Module-Count***.<br>
 - First module is 0 and so on.<br>
 
 ### Send data to Node:
-- Only ACII code characters "blank" (0x20) to ~ (0x7E) are displayed.<br>
+- Only ASCII code characters "blank" (0x20) to ~ (0x7E) are displayed.<br>
 - An exception to this is<br>
 ***0xB0***: draws ° (alt+0176).<br>
 ***0xB1***: draws °C (alt+0177).<br>
