@@ -90,8 +90,22 @@
         <dd>Input is converted to string.</dd>
         <dd>Only charactes 0x20-0x7E are accepted.</dd>
         <dd>An exception to this is the degree sign °.</dd>
+        <dd><b>0x00 - 0x1F</b>: displays custom font.</dd>
         <dd>Trailing point in string, turns LED point on.</dd>
         <dd>More then valid 8 characters are cut.</dd>
+        <dt>customfont (optional)<span class="property-type">number array</span></dt>
+        <dd>Sends custom font as array.</dd>
+        <dd>Each array element defines 7-segment leds.</dd>
+        <dd>Max. 32 custom fonts are possible.</dd>
+        <dd>To display the custom font, send text with</dd>
+        <dd><b>String.fromCharCode(0,1,2);</b></dd>
+        <dd>This displays the first three custom fonts.</dd>
+        <dd>To delete custom fonts, send empty array.</dd>
+        <dt>topos (optional)<span class="property-type">number</span></dt>
+        <dd>Sets the start position where the array</dd>
+        <dd>of custom font written.</dd>
+        <dd>Valid values are 0x00 - 0x1F.</dd>
+        <dd>Default position is 0x00.</dd>
         <dt>npos (optional)<span class="property-type">number</span></dt>
         <dd>Selects max7219 module to write.</dd>
         <dd>Position must lower then Module-Count.<br>

@@ -71,6 +71,39 @@ module.exports = function(RED) {
 				}
 			}
 
+			// Load custom font
+			if (msg.hasOwnProperty('customfont')) {
+				var topos = 0;
+				if (msg.hasOwnProperty('topos')) {
+					if ((typeof msg.topos == 'number') &&  (msg.topos >= 0x00) && (msg.topos <= 0x1F))
+						topos = msg.topos;
+				}
+
+				if (!Array.isArray(msg.customfont)) {
+					syslib.outError(node, "inv font", "invalid custom font array");
+					return;
+				}
+				
+				for(var i=0; i < msg.customfont.length; i++) {
+					if (typeof msg.customfont[i] !== "number") {
+						syslib.outError(node, "font number", "invalid custom font number");
+						return;
+					}
+	
+					if (msg.customfont[i] < 0)
+						msg.customfont[i] = 0;
+					else if (msg.customfont[i] > 255)
+						msg.customfont[i] = 255;
+				}
+
+				if (!sysmodule.write7segCustomFont(msg.customfont, topos)) {
+					syslib.outError(node, "font error", "custom Font not load");
+					return;
+				}
+				else
+					syslib.outOk(node);
+			}
+
 			var ralign = node.ralign;
 
 			if (msg.hasOwnProperty('ralign')) {

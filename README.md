@@ -16,10 +16,6 @@ Example  **max7219** Matrix Module
 
 ![image info](images/max7219-matrix.png)
 
-Connecting  **max7219** Module to SPI0-CS0
-
-![image info](images/connecting7219.png)
-
 ## Nodes
 - **max7219-7seg**: Controls mx7219 7-Segment Modules.
 - **max7219-mtx**: Controls mx7219 Matrix Modules.
@@ -32,13 +28,8 @@ npm install node-red-contrib-iiot-rpi-max7219
 ```
 
 ## Usage
-- Cascade modules in series.<br>
-- If the modules are connected to the +5V RPi,<br>
-  consider the total power consumption.<br>
-- Use external voltage source on overload.<br>
-- This node works on Raspberry Pi with 32bit or 64bit OS.
-- Enable SPI with raspi-config.<br>
-- For enable SPI1 read Rpi documentation.<br> 
 
+[How To Use](howtouse.md)<br>
 
+## Changelog
 [CHANGELOG](CHANGELOG.md)<br>
